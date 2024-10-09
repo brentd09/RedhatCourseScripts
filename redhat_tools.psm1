@@ -27,7 +27,7 @@ function Convert-LinuxShadow {
   BEGIN {$EpochDate = [datetime]'1-jan-1970'}
   PROCESS {
     foreach ($Line in $LinuxShadow) {
-      if ($Line -match '^[a-zA-Z0-9]+:[a-zA-Z0-9!*]:(\d*:){6}]+') {
+      if ($Line -match '^(.*:){8}') {
         $ShadowArray = $Line -split ':'
         $ShadowHash = [ordered]@{
           Name                   = $ShadowArray[0]
