@@ -51,11 +51,11 @@ cat /etc/passwd | while IFS=: read -r username _ uid gid _ _ _; do
   if [[ $uid -gt 1000 ]];then
     echo -n "$username - should this user be modified? "
     # Because of the while read loop, we need to tell
-    # this read command to get input from terminal (keyboard)
+    # this next read command to get input from terminal (keyboard)
     read reponse < /dev/tty
     if [[ $reponse =~ ^[yY].* ]];then
       echo -e "\e[${text_color}mSetting $username max pass age to $max_pass_age\e[0m"
-      # chage -M $max_pass_age $username
+      chage -M $max_pass_age $username
     fi
   fi
 done
