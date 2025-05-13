@@ -15,7 +15,8 @@ if [[ $* =~ --help ]];then
   echo "  34 days for selected users"
   echo 
   echo "Created by: Brent Denny"
-  echo "Created on: 13-May-2025
+  echo "Created on: 13-May-2025"
+  echo
   exit
 fi
 
