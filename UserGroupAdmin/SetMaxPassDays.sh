@@ -6,13 +6,17 @@ show_help () {
     echo "Usage: $0 [<days>] "
     echo "Sets the maximum days for a users password"
     echo
-    echo "With no days the default will be set to 50"
+    echo "With no days argument the value will be set to 50 by default"
     echo "  --help         shows this content"
     echo 
     echo "Examples"
     echo "  $0 34"
     echo "  This will set the Maximum Password Time to be"
     echo "  34 days for selected users"
+    echo 
+    echo "  $0 "
+    echo "  This will set the Maximum Password Time to be"
+    echo "  the defaultof 50 days for selected users"
     echo 
     echo "Created by: Brent Denny"
     echo "Created on: 13-May-2025"
@@ -25,6 +29,7 @@ if [[ $* =~ --help ]];then
 fi
 
 # Check to see if the first argument is a number using regex
+# First argument to be used as the MaxPasswdDays setting
 if [[ $1 =~ [0-9]+ ]];then
   max_pass_age=$1
 else
