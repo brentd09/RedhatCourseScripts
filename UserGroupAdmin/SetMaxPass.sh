@@ -1,5 +1,6 @@
 #!/bin/bash
 
+# Check to see if the first argument is a number using regex
 if [[ $1 =~ [0-9]+ ]];then
   max_pass_age=$1
 else
@@ -14,6 +15,8 @@ text_color=35
 clear
 echo "Changing the users MAX PASSWORD settings"
 echo
+# IFS sets the delimeter and the columns of data are read into the variables 
+# ( _ is used to skip the field ) 
 cat /etc/passwd | while IFS=: read -r username _ uid gid _ _ _; do
   if [[ $uid -gt 1000 ]];then
     echo -n "$username - should this user be modified? "
