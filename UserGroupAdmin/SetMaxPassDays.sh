@@ -39,8 +39,9 @@ text_color=35
 clear
 echo "Changing the users MAX PASSWORD settings"
 echo
-# IFS sets the delimeter and the columns of data are read into the variables 
+# IFS sets the delimeter, and then the columns of data are read into the variables 
 # ( _ is used to skip the field ) 
+# the -r on the read command does not allow \ to become an escape character
 cat /etc/passwd | while IFS=: read -r username _ uid gid _ _ _; do
   if [[ $uid -gt 1000 ]];then
     echo -n "$username - should this user be modified? "
