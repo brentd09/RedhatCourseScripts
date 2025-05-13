@@ -1,13 +1,21 @@
 #!/bin/bash
 
 # Set up help 
-if [[ $* =~ help ]];then
+if [[ $* =~ --help ]];then
   clear
   echo "Usage: $0 [<days>] "
+  echo "Sets the maximum days for a users password"
   echo
-  echo "$0 34"
-  echo "This will set the Maximum Password Time to be"
-  echo "34 days for selected users"
+  echo "With no days the default will be set to 50"
+  echo "  --help         shows this content"
+  echo 
+  echo "Examples"
+  echo "  $0 34"
+  echo "  This will set the Maximum Password Time to be"
+  echo "  34 days for selected users"
+  echo 
+  echo "Created by: Brent Denny"
+  echo "Created on: 13-May-2025
   exit
 fi
 
