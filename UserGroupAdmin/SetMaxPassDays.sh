@@ -1,5 +1,16 @@
 #!/bin/bash
 
+# Set up help 
+if [[ $* =~ help ]];then
+  clear
+  echo "Usage: $0 [<days>] "
+  echo
+  echo "$0 34"
+  echo "This will set the Maximum Password Time to be"
+  echo "34 days for selected users"
+  exit
+fi
+
 # Check to see if the first argument is a number using regex
 if [[ $1 =~ [0-9]+ ]];then
   max_pass_age=$1
