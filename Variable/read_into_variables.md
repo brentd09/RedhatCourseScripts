@@ -29,7 +29,7 @@ done
 
 IFS=":"
 
-# _ means skip this field
+# _ means skip this field(s)
 cat /etc/passwd | while read -r name _ uid gid _; do
   echo $name $pass $uid $gid $remaining
 done
