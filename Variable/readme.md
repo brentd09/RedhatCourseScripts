@@ -1,5 +1,5 @@
 # Parameter Expansion
-## Bash provides powerful parameter expansion features for manipulating variables within functions. Some useful expansions include:
+## Bash provides powerful parameter expansion for manipulating variables:
 <br>
 
 - **${#var}:**
