@@ -1,5 +1,12 @@
 # .vimrc file to auto color and indent for bash scripts
 
+<br>
+
+> [!IMPORTANT]
+> Copy this as .vimrc in users home directory
+
+<br>
+
 
 ```vimrc
 " Enable Syntax Highlighting
