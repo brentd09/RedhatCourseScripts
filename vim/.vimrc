@@ -18,6 +18,3 @@ augroup bash_settings
   autocmd FileType sh,bash setlocal shiftwidth=2 softtabstop=2 tabstop=2 expandtab
 augroup END
 
-" Hightlight Trailing Whitespace
-hightlight ExtraWhitespace ctermbg=red guibg=red
-match ExtraWhitespace /\s\+$/
