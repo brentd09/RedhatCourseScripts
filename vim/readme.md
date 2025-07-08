@@ -12,7 +12,7 @@
 " Enable Syntax Highlighting
 syntax on
 
-# Expose spaces as red dots
+" Expose spaces as red dots
 set listchars=space:.
 highlight SpecialKey ctermfg=darkred
 
