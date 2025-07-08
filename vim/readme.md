@@ -12,6 +12,10 @@
 " Enable Syntax Highlighting
 syntax on
 
+# Expose spaces as red dots
+set listchars=space:.
+highlight SpecialKey ctermfg=darkred
+
 " File Type Detection and Plugin Loading
 filetype on
 filetype plugin on
