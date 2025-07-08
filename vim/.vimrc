@@ -4,6 +4,7 @@ syntax on
 " Expose spaces as red dots
 set listchars=space:.
 highlight SpecialKey ctermfg=darkred
+set list
 
 " File Type Detection and Plugin Loading
 filetype on
