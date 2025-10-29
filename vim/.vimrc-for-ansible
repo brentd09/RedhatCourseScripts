@@ -1,0 +1,60 @@
+
+" ========== YAML & Ansible Development Settings ==========
+
+" --- General ---
+syntax on                      " Enable syntax highlighting
+filetype plugin indent on      " Enable filetype detection, plugins & indentation
+set nonumber                   " Do not show line numbers
+set ruler                      " Show cursor position in status line
+set showcmd                    " Show (partial) command in status line
+set showmatch                  " Highlight matching brackets/braces
+set cursorline                 " Highlight current line
+set encoding=utf-8
+
+" --- Indentation ---
+set expandtab                  " Use spaces instead of tabs
+set tabstop=2                  " Display width of a tab character
+set shiftwidth=2               " Indent size
+set softtabstop=2              " Number of spaces per tab press
+set autoindent                 " Maintain indent from previous line
+set smartindent                " Smart indentation for programming
+set smarttab                   " Smarter tab handling
+
+" --- YAML-specific ---
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
+autocmd FileType yaml setlocal ai si et
+
+" --- Ansible-specific ---
+" Enable YAML highlighting and detect Ansible keywords
+let g:ansible_attribute_highlight = "ob"
+let g:ansible_extra_keywords_highlight = 1
+let g:ansible_name_highlight = 'b'
+
+" Automatically recognize Ansible YAML files
+autocmd BufRead,BufNewFile */playbooks/*.yml set filetype=yaml.ansible
+autocmd BufRead,BufNewFile */roles/*/tasks/*.yml set filetype=yaml.ansible
+autocmd BufRead,BufNewFile */roles/*/handlers/*.yml set filetype=yaml.ansible
+autocmd BufRead,BufNewFile */group_vars/*.yml set filetype=yaml.ansible
+autocmd BufRead,BufNewFile */host_vars/*.yml set filetype=yaml.ansible
+
+" --- Visual helpers ---
+set list                       " Show hidden characters
+set listchars=tab:▸\ ,trail:·  " Show tabs/trailing spaces
+set nowrap                     " Don’t wrap long lines
+set laststatus=2               " Always show status line
+
+" --- Search ---
+set ignorecase                 " Case-insensitive search
+set smartcase                  " ...but case-sensitive if caps used
+set incsearch                  " Show matches as you type
+set hlsearch                   " Highlight search results
+
+" --- Optional Plugins (if installed) ---
+" YAML linting with ALE
+let g:ale_linters = { 'yaml': ['yamllint'] }
+
+" Highlight 80th column
+set colorcolumn=80
+highlight ColorColumn ctermbg=darkgray
+
+" --- End ---
