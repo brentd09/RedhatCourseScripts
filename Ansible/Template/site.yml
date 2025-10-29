@@ -4,7 +4,9 @@
   connection: local
   gather_facts: true
   vars:
-    project_root: "/home/{{ ansible_user }}/ansible-projects/my-new-project"
+    project_name: "my-new-project"       # Edit this project name
+    project_user: "{{ ansible_user }}"   # Possibly edite this line also
+    project_root: "/home/{{ project_user }}/ansible-projects/{{ project_name }}"  # Change this line to alter where the projects are stored
 
   tasks:
 
@@ -12,16 +14,16 @@
       ansible.builtin.file:
         path:  "{{ project_root }}"
         state: directory
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
+        owner: "{{ project_user }}"
+        group: "{{ project_user }}"
         mode:  0755
 
 
     - name: Create inventory file
       ansible.builtin.copy:
         dest:  "{{ project_root }}/inventory"
-        owner: ansible
-        group: ansible
+        owner: "{{ project_user }}"
+        group: "{{ project_user }}"
         mode:  0644
         content: |
           [remoteservers]
@@ -43,8 +45,8 @@
       ansible.builtin.file:
         path: "{{ project_root }}/{{ item }}"
         state: directory
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
+        owner: "{{ project_user }}"
+        group: "{{ project_user }}"
         mode:  0755
       loop:
         - artifacts
@@ -59,8 +61,8 @@
     - name: Create site.yml playbook skeleton
       ansible.builtin.copy:
         dest:  "{{ project_root }}/site.yml"
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
+        owner: "{{ project_user }}"
+        group: "{{ project_user }}"
         mode:  0644
         content: |
           ---
@@ -74,8 +76,8 @@
     - name: Create ansible-navigator.yml configuration file
       ansible.builtin.copy:
         dest:  "{{ project_root }}/ansible-navigator.yml"
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
+        owner: "{{ project_user }}"
+        group: "{{ project_user }}"
         mode:  0644
         content: |
           ---
@@ -96,13 +98,13 @@
     - name: Create ansible.cfg
       ansible.builtin.copy:
         dest:  "{{ project_root }}/ansible.cfg"
-        owner: "{{ ansible_user }}"
-        group: "{{ ansible_user }}"
+        owner: "{{ project_user }}"
+        group: "{{ project_user }}"
         mode:  0644
         content: |
           [defaults]
           inventory = ./inventory
-          remote_user = ansible
+          remote_user = "{{ project_user }}"
 
           [privilege_escalation]
           become = true
