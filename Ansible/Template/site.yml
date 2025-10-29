@@ -2,39 +2,27 @@
 - name: Create a standardized Ansible project structure
   hosts: localhost
   connection: local
-  gather_facts: false
+  gather_facts: true
   vars:
-    project_root: "/home/ansible/ansible-projects/my-new-project"
+    project_root: "/home/{{ ansible_user }}/ansible-projects/my-new-project"
 
   tasks:
 
     - name: Ensure base project directory exists
       ansible.builtin.file:
-        path: "{{ project_root }}"
+        path:  "{{ project_root }}"
         state: directory
-        owner: ansible
-        group: ansible
-        mode: '0755'
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode:  0755
 
-    - name: Create subdirectories for logs, artifacts, and group_vars/host_vars
-      ansible.builtin.file:
-        path: "{{ project_root }}/{{ item }}"
-        state: directory
-        owner: ansible
-        group: ansible
-        mode: '0755'
-      loop:
-        - artifacts
-        - log
-        - group_vars
-        - host_vars
 
     - name: Create inventory file
       ansible.builtin.copy:
-        dest: "{{ project_root }}/inventory"
+        dest:  "{{ project_root }}/inventory"
         owner: ansible
         group: ansible
-        mode: '0644'
+        mode:  0644
         content: |
           [remoteservers]
           remote1.lab.example.com
@@ -47,49 +35,70 @@
           remoteservers
           controlhost
 
+######### These tasks above might need to be changed to suit your project ##########
+
+
+
+    - name: Create subdirectories for logs, artifacts, and group_vars/host_vars
+      ansible.builtin.file:
+        path: "{{ project_root }}/{{ item }}"
+        state: directory
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode:  0755
+      loop:
+        - artifacts
+        - log
+        - group_vars
+        - host_vars
+        - templates
+        - files
+        - roles
+
+
     - name: Create site.yml playbook skeleton
       ansible.builtin.copy:
-        dest: "{{ project_root }}/site.yml"
-        owner: ansible
-        group: ansible
-        mode: '0644'
+        dest:  "{{ project_root }}/site.yml"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode:  0644
         content: |
           ---
-          - name: Example site playbook
-            hosts: remoteservers
-            become: true
+          - name:     Example site playbook
+            hosts:    remoteservers
+            become:   true
             tasks:
               - name: Ping all hosts
                 ansible.builtin.ping:
 
     - name: Create ansible-navigator.yml configuration file
       ansible.builtin.copy:
-        dest: "{{ project_root }}/ansible-navigator.yml"
-        owner: ansible
-        group: ansible
-        mode: '0644'
+        dest:  "{{ project_root }}/ansible-navigator.yml"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode:  0644
         content: |
           ---
           ansible-navigator:
             mode: interactive
             execution-environment:
-              enabled: true
+              enabled:          true
               container-engine: podman
-              image: ghcr.io/ansible/creator-ee:v0.22.0
+              image:            ghcr.io/ansible/creator-ee:v0.22.0
             playbook-artifact:
-              enable: true
+              enable:  true
               save-as: "./artifacts/{playbook_name}-{time_stamp}.json"
             logging:
-              level: info
+              level:  info
               append: true
-              file: "./log/navigator.log"
+              file:   "./log/navigator.log"
 
     - name: Create ansible.cfg
       ansible.builtin.copy:
-        dest: "{{ project_root }}/ansible.cfg"
-        owner: ansible
-        group: ansible
-        mode: 0644
+        dest:  "{{ project_root }}/ansible.cfg"
+        owner: "{{ ansible_user }}"
+        group: "{{ ansible_user }}"
+        mode:  0644
         content: |
           [defaults]
           inventory = ./inventory
