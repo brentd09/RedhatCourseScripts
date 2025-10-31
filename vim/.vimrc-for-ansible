@@ -54,7 +54,7 @@ set hlsearch                   " Highlight search results
 let g:ale_linters = { 'yaml': ['yamllint'] }
 
 " Highlight 80th column
-set colorcolumn=80
+set colorcolumn=
 highlight ColorColumn ctermbg=darkgray
 
 " --- End ---

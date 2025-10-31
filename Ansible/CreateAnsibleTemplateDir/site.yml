@@ -4,36 +4,44 @@
   connection: local
   gather_facts: true
   vars:
-    project_name: "my-new-project"       # Edit this project name
-    project_user: "{{ ansible_user }}"   # Possibly edite this line also
-    project_root: "/home/{{ project_user }}/ansible-projects/{{ project_name }}"  # Change this line to alter where the projects are stored
+    ### Edit these variables to reflect your circumstance
+    project_name: "my-new-project"
+    remote_user_name : ansible
+    project_root: "/home/{{ remote_user_name }}/ansible-projects/{{ project_name }}"
+    ee_image: "registry.redhat.io/ansible-automation-platform-22/ee-supported-rhel8:latest"
 
   tasks:
+    - name: Ensure user exists (ansible UID 5000)
+      ansible.builtin.user:
+        name: "{{ remote_user_name }}"
+        uid: 5000
+        shell: /bin/bash
+        create_home: true
 
     - name: Ensure base project directory exists
       ansible.builtin.file:
         path:  "{{ project_root }}"
         state: directory
-        owner: "{{ project_user }}"
-        group: "{{ project_user }}"
+        owner: "{{ remote_user_name }}"
+        group: "{{ remote_user_name }}"
         mode:  0755
 
 
     - name: Create inventory file
       ansible.builtin.copy:
         dest:  "{{ project_root }}/inventory"
-        owner: "{{ project_user }}"
-        group: "{{ project_user }}"
+        owner: "{{ remote_user_name }}"
+        group: "{{ remote_user_name }}"
         mode:  0644
         content: |
           [remoteservers]
-          remote1.lab.example.com
-          remote2.lab.example.com
+          servera.lab.example.com
+          serverb.lab.example.com
 
           [controlhost]
-          controlhost.lab.example.com
+          workstation.lab.example.com
 
-          [all:children]
+          [allhosts:children]
           remoteservers
           controlhost
 
@@ -45,8 +53,8 @@
       ansible.builtin.file:
         path: "{{ project_root }}/{{ item }}"
         state: directory
-        owner: "{{ project_user }}"
-        group: "{{ project_user }}"
+        owner: "{{ remote_user_name }}"
+        group: "{{ remote_user_name }}"
         mode:  0755
       loop:
         - artifacts
@@ -61,8 +69,8 @@
     - name: Create site.yml playbook skeleton
       ansible.builtin.copy:
         dest:  "{{ project_root }}/site.yml"
-        owner: "{{ project_user }}"
-        group: "{{ project_user }}"
+        owner: "{{ remote_user_name }}"
+        group: "{{ remote_user_name }}"
         mode:  0644
         content: |
           ---
@@ -76,8 +84,8 @@
     - name: Create ansible-navigator.yml configuration file
       ansible.builtin.copy:
         dest:  "{{ project_root }}/ansible-navigator.yml"
-        owner: "{{ project_user }}"
-        group: "{{ project_user }}"
+        owner: "{{ remote_user_name }}"
+        group: "{{ remote_user_name }}"
         mode:  0644
         content: |
           ---
@@ -86,7 +94,7 @@
             execution-environment:
               enabled:          true
               container-engine: podman
-              image:            ghcr.io/ansible/creator-ee:v0.22.0
+              image:            "{{ ee_image }}"
             playbook-artifact:
               enable:  true
               save-as: "./artifacts/{playbook_name}-{time_stamp}.json"
@@ -98,13 +106,13 @@
     - name: Create ansible.cfg
       ansible.builtin.copy:
         dest:  "{{ project_root }}/ansible.cfg"
-        owner: "{{ project_user }}"
-        group: "{{ project_user }}"
+        owner: "{{ remote_user_name }}"
+        group: "{{ remote_user_name }}"
         mode:  0644
         content: |
           [defaults]
           inventory = ./inventory
-          remote_user = "{{ project_user }}"
+          remote_user = "{{ remote_user_name }}"
 
           [privilege_escalation]
           become = true
