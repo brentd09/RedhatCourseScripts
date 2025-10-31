@@ -2,4 +2,6 @@
 ansible-navigator:
   execution-environment:
     enabled: false
+    pull-ploicy: missing
+    image: registry.redhat.io/ansible-automation-platform-22/ee-supported-rhel8:latest
   mode: stdout
